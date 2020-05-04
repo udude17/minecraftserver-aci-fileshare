@@ -20,6 +20,8 @@ Here are some instructions to get in running in an Azure Subscription with Contr
 NOTES:  
 The main files after using the game are on the file share in the /world directory. 
 
+Sizing: 3GB is minimum recommended for FORGE server type.  1cpu can be OK, 2cpu feels better in the game.
+
 Consider the /save-all commmand to flush the server to the file share before exiting the game. An ACI container stop command in the Azure Portal does generally make the minecraft server save to disk, but I would wait 1 minute regardless, just in case. 
 
 
