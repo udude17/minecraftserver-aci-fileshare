@@ -1,0 +1,122 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "imageRef": {
+      "type": "string",
+      "defaultValue": "itzg/minecraft-server"
+    },
+    "serverType": {
+      "type": "string",
+      "defaultValue": "FORGE"
+    },
+    "storageAccountName": {
+      "type": "string",
+      "defaultValue": "kdude17storage"
+    },
+    "dnsName": {
+      "type": "string",
+      "defaultValue": "kdudeminecraftserver1"
+    },
+    "minecraft-sharename-data": {
+      "type": "string",
+      "defaultValue": "minecraft-data"
+    },
+    "minecraft-sharename-mods": {
+      "type": "string",
+      "defaultValue": "minecraft-mods"
+    },
+    "minecraft-sharename-config": {
+      "type": "string",
+      "defaultValue": "minecraft-config"
+    }
+  },
+  "variables": {
+    "containerName": "[parameters('dnsName')]"
+  },
+  "resources": [
+    {
+      "name": "[variables('containerName')]",
+      "type": "Microsoft.ContainerInstance/containerGroups",
+      "apiVersion": "2018-10-01",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "containers": [{
+          "name": "[variables('containerName')]",
+          "properties": {
+            "image": "[parameters('imageRef')]",
+            "resources": {
+              "requests": {
+                "cpu": 2,
+                "memoryInGb": 4
+              }
+            },
+            "environmentVariables": [
+              {
+                "name": "EULA",
+                "value": "TRUE"
+              },
+              {
+                "name": "TYPE",
+                "value": "[parameters('servertype')]"
+              }
+            ],
+            "ports": [
+              {
+                "port": 25565
+              }
+            ],
+            "volumeMounts": [
+              {"name": "data", "mountPath": "/data"},
+              {"name": "mods", "mountPath": "/mods"},
+              {"name": "config", "mountPath": "/config"}
+            ]
+          }  
+        }],
+        "osType": "Linux",
+        "ipAddress": {
+          "type": "Public",
+          "ports": [
+            {
+              "protocol": "TCP",
+              "port": 25565
+            }
+          ],
+          "dnsNameLabel": "[parameters('dnsName')]"
+        },
+        "volumes": [
+          {
+          "name": "data",
+          "azureFile":  {
+              "shareName": "[parameters('minecraft-sharename-data')]",
+              "storageAccountName": "[parameters('storageAccountName')]",
+              "storageAccountKey": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName')),'2016-01-01').keys[0].value]"
+              }
+          },
+          {
+          "name": "mods",
+          "azureFile": {
+              "shareName": "[parameters('minecraft-sharename-mods')]",
+              "storageAccountName": "[parameters('storageAccountName')]",
+              "storageAccountKey": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName')),'2016-01-01').keys[0].value]"
+              }
+          },
+          {
+          "name": "config",
+          "azureFile": {
+              "shareName": "[parameters('minecraft-sharename-config')]",
+              "storageAccountName": "[parameters('storageAccountName')]",
+              "storageAccountKey": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName')),'2016-01-01').keys[0].value]"
+              }
+          }
+        ]
+      }
+    }
+  ],
+  "outputs": {
+    "serverAddress": {
+      "type": "string",
+      "value": "[reference(concat('Microsoft.ContainerInstance/containerGroups/', variables('containerName')), '2018-10-01').ipAddress.ip]"
+    }
+  }
+}
