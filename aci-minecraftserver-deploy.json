@@ -12,11 +12,11 @@
     },
     "storageAccountName": {
       "type": "string",
-      "defaultValue": "kdude17storage"
+      "defaultValue": "udude17storage"
     },
     "dnsName": {
       "type": "string",
-      "defaultValue": "kdudeminecraftserver1"
+      "defaultValue": "ududeminecraftserver1"
     },
     "minecraft-sharename-data": {
       "type": "string",
