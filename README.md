@@ -7,11 +7,11 @@ Here are some instructions to get in running in an Azure Subscription with Contr
 
 		Step 1:  Create storage account and file shares with names noted in the template parameter section
 		
-		Step 2:  Edit the TYPE to be either FORGE or other type
+		Step 2:  Edit paramter "serverType" to be either FORGE or other type (please see Minecraft docs)
 		
 		Step 3:  Update the storage account name (prefix only) to match what you chose in Step 1
 		
-		Step 4:  Update the dnsName
+		Step 4:  Update the "dnsName" parameter
 		
 		Step 5:  Deploy template either 
         	 	Azure Portal, create new "Template Deployment (using custom template)" 
