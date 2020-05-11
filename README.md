@@ -5,7 +5,7 @@ Type FORGE was chosen to have a chance at using mods on the server.
 
 Here are some instructions to get in running in an Azure Subscription with Contributor rights:
 
-		Step 1:  Create storage account and file shares with names noted in the template resource section
+		Step 1:  Create storage account and file shares with names noted in the template parameter section
 		
 		Step 2:  Edit the TYPE to be either FORGE or other type
 		
